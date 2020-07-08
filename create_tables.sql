@@ -1,0 +1,60 @@
+CREATE TABLE IF NOT EXISTS Article (
+  articleID INT NOT NULL PRIMARY KEY,
+  title VARCHAR NULL,
+  content VARCHAR NULL,
+  summary VARCHAR NULL,
+  scrapedAt TIMESTAMP,
+  insertedAt TIMESTAMP,
+  updatedAt TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS Types (
+  typeID SERIAL PRIMARY KEY,
+  typeValue VARCHAR NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS Typelinks (
+  articleID INT REFERENCES Article(articleID),
+  typeID INT REFERENCES Types(typeID)
+);
+
+CREATE TABLE IF NOT EXISTS Keyword (
+  keywordID SERIAL PRIMARY KEY,
+  keywordValue VARCHAR NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS KeywordLinks (
+  articleID INT REFERENCES Article(articleID),
+  keywordID INT REFERENCES Keyword(keywordID)  
+);
+
+CREATE TABLE IF NOT EXISTS Tag (
+  tagID SERIAL PRIMARY KEY,
+  tagValue VARCHAR NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS TagLinks (
+  articleID INT REFERENCES Article(articleID),
+  tagID INT REFERENCES Tag(tagID)   
+);
+
+CREATE TABLE IF NOT EXISTS Domain (
+  domainID SERIAL PRIMARY KEY,
+  domainURL VARCHAR NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS Webpage (
+  articleID INT REFERENCES Article(articleID),
+  domainID INT REFERENCES Domain(domainID),
+  webpageURL VARCHAR NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS Author (
+  authorID SERIAL PRIMARY KEY,
+  authorName VARCHAR NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS WrittenBy (
+  articleID INT REFERENCES Article(articleID),
+  authorID INT REFERENCES Author(authorID)
+);
